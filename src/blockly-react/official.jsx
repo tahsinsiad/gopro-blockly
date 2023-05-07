@@ -24,13 +24,13 @@ export const officialToolbox = (
     <Category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">
       <Block type="controls_if" />
       <Block type="logic_compare" />
-      <Block type="logic_operation" />
+      {/* <Block type="logic_operation" />
       <Block type="logic_negate" />
       <Block type="logic_boolean" />
       <Block type="logic_null" />
-      <Block type="logic_ternary" />
+      <Block type="logic_ternary" /> */}
     </Category>
-    <Category name="%{BKY_CATLOOPS}" colour="%{BKY_LOOPS_HUE}">
+    {/* <Category name="%{BKY_CATLOOPS}" colour="%{BKY_LOOPS_HUE}">
       <Block type="controls_repeat_ext">
         <Value name="TIMES">
           <Shadow type="math_number">
@@ -58,12 +58,14 @@ export const officialToolbox = (
       </Block>
       <Block type="controls_forEach" />
       <Block type="controls_flow_statements" />
-    </Category>
+    </Category> */}
     <Category name="%{BKY_CATMATH}" colour="%{BKY_MATH_HUE}">
       <Block type="math_number">
-        <Field name="NUM">123</Field>
+        <Field name="NUM">0</Field>
       </Block>
-      <Block type="math_arithmetic">
+      <Block type="basic_math_op" />
+      <Block type="special_math_op" />
+      {/* <Block type="math_arithmetic">
         <Value name="A">
           <Shadow type="math_number">
             <Field name="NUM">1</Field>
@@ -158,10 +160,10 @@ export const officialToolbox = (
             <Field name="NUM">1</Field>
           </Shadow>
         </Value>
-      </Block>
+      </Block> */}
     </Category>
     <Category name="%{BKY_CATTEXT}" colour="%{BKY_TEXTS_HUE}">
-      <Block type="text" />
+      {/* <Block type="text" />
       <Block type="text_join" />
       <Block type="text_append">
         <Value name="TEXT">
@@ -221,23 +223,17 @@ export const officialToolbox = (
             <Field name="TEXT">abc</Field>
           </Shadow>
         </Value>
-      </Block>
-      <Block type="text_print">
+      </Block> */}
+      <Block type="print" />
+      {/* <Block type="text_prompt_ext">
         <Value name="TEXT">
           <Shadow type="text">
             <Field name="TEXT">abc</Field>
           </Shadow>
         </Value>
-      </Block>
-      <Block type="text_prompt_ext">
-        <Value name="TEXT">
-          <Shadow type="text">
-            <Field name="TEXT">abc</Field>
-          </Shadow>
-        </Value>
-      </Block>
+      </Block> */}
     </Category>
-    <Category name="%{BKY_CATLISTS}" colour="%{BKY_LISTS_HUE}">
+    {/* <Category name="%{BKY_CATLISTS}" colour="%{BKY_LISTS_HUE}">
       <Block type="lists_create_with">
         <Mutation items="0" />
       </Block>
@@ -287,8 +283,8 @@ export const officialToolbox = (
         </Value>
       </Block>
       <Block type="lists_sort" />
-    </Category>
-    <Category name="%{BKY_CATCOLOUR}" colour="%{BKY_COLOUR_HUE}">
+    </Category> */}
+    {/* <Category name="%{BKY_CATCOLOUR}" colour="%{BKY_COLOUR_HUE}">
       <Block type="colour_picker" />
       <Block type="colour_random" />
       <Block type="colour_rgb">
@@ -325,17 +321,17 @@ export const officialToolbox = (
           </Shadow>
         </Value>
       </Block>
-    </Category>
+    </Category> */}
     <Sep />
-    <Category
+    {/* <Category
       name="%{BKY_CATVARIABLES}"
       colour="%{BKY_VARIABLES_HUE}"
       custom="VARIABLE"
-    />
-    <Category
+    /> */}
+    {/* <Category
       name="%{BKY_CATFUNCTIONS}"
       colour="%{BKY_PROCEDURES_HUE}"
       custom="PROCEDURE"
-    />
+    /> */}
   </React.Fragment>
 );

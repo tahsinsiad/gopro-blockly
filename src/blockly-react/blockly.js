@@ -1,6 +1,6 @@
 import React from 'react';
 import constate from 'constate';
-import Blockly, { Workspace } from 'blockly/core';
+import Blockly from 'blockly/core';
 import { officialToolbox, Xml } from './official';
 import { customTools } from './customToolbox';
 const h = React.createElement;
