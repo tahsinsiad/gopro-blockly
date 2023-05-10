@@ -1,6 +1,17 @@
 .customModal {
     background: #b2dbbf;
-    min-width: 500px;
+    min-width: 400px;
     width: 100%;
   }
+
+  .qrGeneratorWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
   
+  .heading {
+    font-size: 25px;
+    font-weight: 600;
+  }

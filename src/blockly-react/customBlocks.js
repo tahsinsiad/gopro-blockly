@@ -192,57 +192,6 @@ Blockly.Blocks['bp_tile_trigger'] = {
   },
 };
 
-// Blockly.Blocks['custom_if_else'] = {
-//   init: function () {
-//     this.appendValueInput('IF0')
-//       .setCheck('Number')
-//       .appendField('if')
-//       .appendField(
-//         new Blockly.FieldDropdown([
-//           ['accelaration', 'acc'],
-//           ['gyro', 'gyro'],
-//         ]),
-//         'VAR'
-//       )
-//       .appendField(
-//         new Blockly.FieldDropdown([
-//           ['>', 'greater'],
-//           ['<', 'less'],
-//           ['=', 'equal'],
-//         ]),
-//         'compare'
-//       );
-//     this.appendStatementInput('IFDO').setCheck(null).appendField('');
-//     this.appendValueInput('ELSE0').setCheck(null).appendField('else');
-//     this.appendStatementInput('ELSEDO').setCheck(null);
-//     this.setPreviousStatement(true, null);
-//     this.setNextStatement(true, null);
-//     this.setColour(135);
-//     this.setTooltip('');
-//     this.setHelpUrl('');
-//   },
-// };
-
-// Blockly.javascriptGenerator['custom_if_else'] = function (block) {
-//   var dropdown_var = block.getFieldValue('VAR');
-//   var dropdown_compare = block.getFieldValue('compare');
-//   var value_if0 = Blockly.JavaScript.valueToCode(
-//     block,
-//     'IF0',
-//     Blockly.JavaScript.ORDER_ATOMIC
-//   );
-//   var statements_ifdo = Blockly.JavaScript.statementToCode(block, 'IFDO');
-//   var value_else0 = Blockly.JavaScript.valueToCode(
-//     block,
-//     'ELSE0',
-//     Blockly.JavaScript.ORDER_ATOMIC
-//   );
-//   var statements_elsedo = Blockly.JavaScript.statementToCode(block, 'ELSEDO');
-//   // TODO: Assemble JavaScript into code variable.
-//   var code = '...;\n';
-//   return code;
-// };
-
 Blockly.Blocks['set_var'] = {
   init: function () {
     this.appendValueInput('set_user_defined_val')
@@ -290,10 +239,10 @@ Blockly.Blocks['set_var_system'] = {
       .appendField('set the value of')
       .appendField(
         new Blockly.FieldDropdown([
-          ['accelaration', 'ACCELERATION'],
-          ['gyro', 'GYRO'],
-          ['iso value', 'ISO_VALUE'],
-          ['shutter speed', 'SHUTTER_SPEED'],
+          ['accelaration', 'a'],
+          ['gyro', 'g'],
+          ['iso value', 'i'],
+          ['shutter speed', 's'],
         ]),
         'SYSTEM_DEFINED_VAR'
       );
@@ -497,32 +446,6 @@ javascriptGenerator['bp_gopro_repeat'] = function (block) {
   var code = `!R`;
   return code;
 };
-
-// javascriptGenerator['variables_get'] = function (block) {
-//   // Variable getter.
-//   // const code = javascriptGenerator.nameDB_.getName(
-//   //   block.getFieldValue('VAR'),
-//   //   NameType.VARIABLE
-//   // );
-//   // return [code, javascriptGenerator.ORDER_ATOMIC];
-//   return '';
-// };
-
-// javascriptGenerator['variables_set'] = function (block) {
-//   // Variable setter.
-//   // const argument0 =
-//   //   javascriptGenerator.valueToCode(
-//   //     block,
-//   //     'VALUE',
-//   //     javascriptGenerator.ORDER_ASSIGNMENT
-//   //   ) || '0';
-//   // const varName = javascriptGenerator.nameDB_.getName(
-//   //   block.getFieldValue('VAR'),
-//   //   NameType.VARIABLE
-//   // );
-//   // return varName + ' = ' + argument0 + ';\n';
-//   return '';
-// };
 
 javascriptGenerator['controls_if'] = function (block) {
   // If/elseif/else condition.
