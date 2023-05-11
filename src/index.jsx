@@ -38,7 +38,7 @@ function App() {
               const xml = Blockly.Xml.textToDom(xml_text);
               Blockly.Xml.domToWorkspace(ws, xml);
             } catch (e) {
-              console.log(e);
+              // console.log(e);
             }
           }}
           onUpdated={(e, ws) => {
