@@ -39,6 +39,7 @@ import { javascriptGenerator } from 'blockly/javascript';
 import { BlocklyReactField } from './customFields';
 import { getOperatorsAndVariables } from '../utils/findOperatorFromString';
 import { getHourMinuteFromProp } from '../utils/timeUtils';
+import { hourGenerator, minuteGenerator } from '../utils/hourMinGenerator';
 
 Blockly.Blocks['bp_gopro_start'] = {
   init: function () {
@@ -84,32 +85,6 @@ Blockly.Blocks['bp_gopro_repeat'] = {
   },
 };
 
-Blockly.Blocks['bp_tile_setamount'] = {
-  init: function () {
-    this.appendDummyInput().appendField('Start');
-    this.appendValueInput('TILE').setCheck('Tile');
-    this.appendDummyInput().appendField('的点数为');
-    this.appendValueInput('AMOUNT').setCheck('Number');
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(230);
-    this.setTooltip('改变数值组件的数值');
-    this.setHelpUrl('');
-  },
-};
-
-Blockly.Blocks['bp_tile_getamount'] = {
-  init: function () {
-    this.appendDummyInput().appendField('🧮计数');
-    this.appendValueInput('TILE').setCheck('Tile');
-    this.setInputsInline(true);
-    this.setOutput(true, 'Number');
-    this.setColour(180);
-    this.setTooltip('读取数值组件的数值，或容器组件的数目');
-    this.setHelpUrl('');
-  },
-};
-
 Blockly.Blocks['bp_tile_pick'] = {
   init: function () {
     this.appendDummyInput()
@@ -129,65 +104,6 @@ Blockly.Blocks['bp_tile_pick_quickly'] = {
     this.setOutput(true, 'Tile');
     this.setColour(150);
     this.setTooltip('选取一个工作区域内的组件');
-    this.setHelpUrl('');
-  },
-};
-
-Blockly.Blocks['bp_tile_move'] = {
-  init: function () {
-    this.appendValueInput('TILE_FROM').setCheck('Tile').appendField('从');
-    this.appendValueInput('TILE_TO').setCheck('Tile').appendField('到');
-    this.appendValueInput('AMOUNT').setCheck('Number').appendField('移动');
-    this.appendDummyInput().appendField('个物品');
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(230);
-    this.setTooltip('在容器之间移动物品');
-    this.setHelpUrl('');
-  },
-};
-
-Blockly.Blocks['bp_tile_command'] = {
-  init: function () {
-    this.appendValueInput('TILE').setCheck('Tile').appendField('令');
-    this.appendDummyInput()
-      .appendField('的所有物品执行命令')
-      .appendField(
-        new Blockly.FieldDropdown([
-          ['🔀随机排序', 'shuffle'],
-          ['🌕翻至正面', 'faceup'],
-          ['🌑翻至背面', 'facedown'],
-        ]),
-        'COMMAND'
-      );
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(230);
-    this.setTooltip('操作容器内的所有物品');
-    this.setHelpUrl('');
-  },
-};
-
-Blockly.Blocks['bp_tile_onchange'] = {
-  init: function () {
-    this.appendValueInput('TILE').setCheck('Tile').appendField('当');
-    this.appendStatementInput('CALLBACK')
-      .setCheck(null)
-      .appendField('内容改变时');
-    this.setColour(210);
-    this.setTooltip('容器内容变化时，触发程序');
-    this.setHelpUrl('');
-  },
-};
-
-Blockly.Blocks['bp_tile_trigger'] = {
-  init: function () {
-    this.appendDummyInput()
-      .appendField('🛎️触发')
-      .appendField(new Blockly.FieldTextInput('触发'), 'TRIGGER');
-    this.appendStatementInput('ONTRIGGER').setCheck(null);
-    this.setColour(210);
-    this.setTooltip('当按下触发按钮时，执行程序');
     this.setHelpUrl('');
   },
 };
@@ -215,84 +131,6 @@ Blockly.Blocks['set_var'] = {
     this.setTooltip('');
     this.setHelpUrl('');
   },
-};
-
-javascriptGenerator['set_var'] = function (block) {
-  var dropdown_name = block.getFieldValue('USER_DEFINED_VAR');
-  var value_set_var = javascriptGenerator.valueToCode(
-    block,
-    'set_user_defined_val',
-    javascriptGenerator.ORDER_ATOMIC
-  );
-
-  const goProCmd = `=${dropdown_name}${value_set_var}`;
-  console.log(value_set_var, goProCmd);
-  // TODO: Assemble JavaScript into code variable.
-  // var code = '...;\n';
-  return goProCmd;
-};
-
-Blockly.Blocks['set_var_system'] = {
-  init: function () {
-    this.appendValueInput('set_system_defined_val')
-      .setCheck(null)
-      .appendField('set the value of')
-      .appendField(
-        new Blockly.FieldDropdown([
-          ['accelaration', 'a'],
-          ['gyro', 'g'],
-          ['iso value', 'i'],
-          ['shutter speed', 's'],
-        ]),
-        'SYSTEM_DEFINED_VAR'
-      );
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(135);
-    this.setTooltip('');
-    this.setHelpUrl('');
-  },
-};
-
-javascriptGenerator['set_var_system'] = function (block) {
-  var dropdown_name = block.getFieldValue('SYSTEM_DEFINED_VAR');
-  var value_set_var = javascriptGenerator.valueToCode(
-    block,
-    'set_system_defined_val',
-    javascriptGenerator.ORDER_ATOMIC
-  );
-  // TODO: Assemble JavaScript into code variable.
-  var code = '...;\n';
-  return code;
-};
-
-Blockly.Blocks['user_defined_var_list'] = {
-  init: function () {
-    this.appendDummyInput().appendField(
-      new Blockly.FieldDropdown([
-        ['A', 'A'],
-        ['B', 'B'],
-        ['C', 'C'],
-        ['D', 'D'],
-        ['E', 'E'],
-        ['F', 'F'],
-        ['G', 'G'],
-      ]),
-      'USER_DEFINED_VAR_LIST'
-    );
-    this.setOutput(true, null);
-    this.setColour(230);
-    this.setTooltip('');
-    this.setHelpUrl('');
-  },
-};
-
-javascriptGenerator['user_defined_var_list'] = function (block) {
-  var dropdown_name = block.getFieldValue('USER_DEFINED_VAR_LIST');
-  // TODO: Assemble JavaScript into code variable.
-  var code = dropdown_name;
-  // TODO: Change ORDER_NONE to the correct strength.
-  return [code, javascriptGenerator.ORDER_ATOMIC];
 };
 
 Blockly.Blocks['system_defined_var_list'] = {
@@ -324,14 +162,6 @@ Blockly.Blocks['number_input'] = {
     this.setTooltip('');
     this.setHelpUrl('');
   },
-};
-
-javascriptGenerator['number_input'] = function (block) {
-  var number_name = block.getFieldValue('number_input');
-  // TODO: Assemble JavaScript into code variable.
-  var code = '...';
-  // TODO: Change ORDER_NONE to the correct strength.
-  return [code, javascriptGenerator.ORDER_NONE];
 };
 
 Blockly.Blocks['basic_math_op'] = {
@@ -379,6 +209,144 @@ Blockly.Blocks['print'] = {
     this.setTooltip('');
     this.setHelpUrl('');
   },
+};
+
+Blockly.Blocks['time_picker'] = {
+  init: function () {
+    this.appendDummyInput()
+      .appendField('current_time')
+      .appendField(
+        new Blockly.FieldDropdown([
+          ['>', '>'],
+          ['<', '<'],
+          ['>=', '>='],
+          ['<=', '<='],
+        ]),
+        'comparison_op'
+      )
+      .appendField(new Blockly.FieldDropdown(hourGenerator()), 'hour')
+      .appendField(':')
+      .appendField(new Blockly.FieldDropdown(minuteGenerator()), 'min');
+    this.setOutput(true, null);
+    this.setColour(230);
+    this.setTooltip('');
+    this.setHelpUrl('');
+  },
+};
+
+Blockly.Blocks['set_var_system'] = {
+  init: function () {
+    this.appendValueInput('set_system_defined_val')
+      .setCheck(null)
+      .appendField('set the value of')
+      .appendField(
+        new Blockly.FieldDropdown([
+          ['accelaration', 'a'],
+          ['gyro', 'g'],
+          ['iso value', 'i'],
+          ['shutter speed', 's'],
+        ]),
+        'SYSTEM_DEFINED_VAR'
+      );
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(135);
+    this.setTooltip('');
+    this.setHelpUrl('');
+  },
+};
+
+Blockly.Blocks['user_defined_var_list'] = {
+  init: function () {
+    this.appendDummyInput().appendField(
+      new Blockly.FieldDropdown([
+        ['A', 'A'],
+        ['B', 'B'],
+        ['C', 'C'],
+        ['D', 'D'],
+        ['E', 'E'],
+        ['F', 'F'],
+        ['G', 'G'],
+      ]),
+      'USER_DEFINED_VAR_LIST'
+    );
+    this.setOutput(true, null);
+    this.setColour(230);
+    this.setTooltip('');
+    this.setHelpUrl('');
+  },
+};
+
+Blockly.Blocks['started_at'] = {
+  init: function () {
+    this.appendDummyInput()
+      .appendField('Start at')
+      .appendField(new Blockly.FieldDropdown(hourGenerator()), 'hour')
+      .appendField(':')
+      .appendField(new Blockly.FieldDropdown(minuteGenerator()), 'min');
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(130);
+    this.setTooltip('');
+    this.setHelpUrl('');
+  },
+};
+
+Blockly.Blocks['started_at_quickly'] = {
+  init: function () {
+    this.appendDummyInput()
+      .appendField('Start quickly at')
+      .appendField(new Blockly.FieldDropdown(hourGenerator()), 'hour')
+      .appendField(':')
+      .appendField(new Blockly.FieldDropdown(minuteGenerator()), 'min');
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(130);
+    this.setTooltip('');
+    this.setHelpUrl('');
+  },
+};
+
+javascriptGenerator['set_var'] = function (block) {
+  var dropdown_name = block.getFieldValue('USER_DEFINED_VAR');
+  var value_set_var = javascriptGenerator.valueToCode(
+    block,
+    'set_user_defined_val',
+    javascriptGenerator.ORDER_ATOMIC
+  );
+
+  const goProCmd = `=${dropdown_name}${value_set_var}`;
+  // TODO: Assemble JavaScript into code variable.
+  // var code = '...;\n';
+  return goProCmd;
+};
+
+javascriptGenerator['set_var_system'] = function (block) {
+  var dropdown_name = block.getFieldValue('SYSTEM_DEFINED_VAR');
+  var value_set_var = javascriptGenerator.valueToCode(
+    block,
+    'set_system_defined_val',
+    javascriptGenerator.ORDER_ATOMIC
+  );
+  const goProCmd = `=${dropdown_name}${value_set_var}`;
+
+  return goProCmd;
+};
+
+javascriptGenerator['user_defined_var_list'] = function (block) {
+  var dropdown_name = block.getFieldValue('USER_DEFINED_VAR_LIST');
+  // TODO: Assemble JavaScript into code variable.
+  var code = dropdown_name;
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, javascriptGenerator.ORDER_ATOMIC];
+};
+
+javascriptGenerator['number_input'] = function (block) {
+  var number_name = block.getFieldValue('number_input');
+  // TODO: Assemble JavaScript into code variable.
+  var code = '...';
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, javascriptGenerator.ORDER_NONE];
 };
 
 javascriptGenerator['print'] = function (block) {
@@ -486,17 +454,6 @@ javascriptGenerator['controls_if'] = function (block) {
       branchCode +
       '}';
 
-    // console.log(block);
-    // const { variables, operators } = getOperatorsAndVariables(conditionCode);
-    // console.log(variables, operators);
-
-    // console.log(
-    //   'conditionCode',
-    //   `${conditionCode[2]}${conditionCode[3]}${conditionCode[0]}${
-    //     conditionCode.split(conditionCode[2] + conditionCode[3])[1]
-    //   }`
-    // );
-
     n++;
   } while (block.getInput('IF' + n));
 
@@ -516,17 +473,31 @@ javascriptGenerator['controls_if'] = function (block) {
   }
   // console.log(code);
   const { variables, operators } = getOperatorsAndVariables(conditionCode);
-  const isTime = variables[0].includes('time');
-  const variableValue = variables[variables.length - 1].trim();
+  const isTime = variables[0]?.includes('time');
+  const variableValue = variables[variables?.length - 1]?.trim();
   const operatorName = `${variables[0][0]}`;
   const { hour, minute } = getHourMinuteFromProp(+variableValue);
-  const cmd = isTime ? `${hour}:${minute}` : `${operatorName}${variableValue}`;
+  const cmd = isTime
+    ? `${hour}:${minute}`
+    : `${operatorName === 'undefined' ? '' : operatorName}${
+        variableValue || ''
+      }`;
   const fullCmd = `${operators[0]}${cmd}${branchCode.trim()}`;
   console.log('full: ', fullCmd);
   const prev = localStorage.getItem('goProCmd') || '';
   localStorage.setItem('goProCmd', prev + fullCmd);
   // window.goProCmd = window.goProCmd + fullCmd;
   return fullCmd;
+};
+
+javascriptGenerator['time_picker'] = function (block) {
+  var dropdown_comparison_op = block.getFieldValue('comparison_op');
+  var dropdown_hour = block.getFieldValue('hour');
+  var dropdown_min = block.getFieldValue('min');
+  // TODO: Assemble JavaScript into code variable.
+  var code = `${dropdown_comparison_op}${dropdown_hour}:${dropdown_min}`;
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, javascriptGenerator.ORDER_ATOMIC];
 };
 
 javascriptGenerator['bp_tile_setamount'] = function (block) {
@@ -573,62 +544,18 @@ javascriptGenerator['bp_tile_pick_quickly'] = function (block) {
   return [code, javascriptGenerator.ORDER_FUNCTION_CALL];
 };
 
-javascriptGenerator['bp_tile_move'] = function (block) {
-  var value_tile_from = javascriptGenerator.valueToCode(
-    block,
-    'TILE_FROM',
-    javascriptGenerator.ORDER_NONE
-  );
-  var value_tile_to = javascriptGenerator.valueToCode(
-    block,
-    'TILE_TO',
-    javascriptGenerator.ORDER_NONE
-  );
-  var value_amount = javascriptGenerator.valueToCode(
-    block,
-    'AMOUNT',
-    javascriptGenerator.ORDER_NONE
-  );
-  // TODO: Assemble javascriptGenerator into code variable.
-  var code = `moveTileContent(${value_tile_from}, ${value_tile_to}, ${value_amount});\n`;
+javascriptGenerator['started_at'] = function (block) {
+  var dropdown_hour = block.getFieldValue('hour');
+  var dropdown_min = block.getFieldValue('min');
+  // TODO: Assemble JavaScript into code variable.
+  var code = `!${dropdown_hour}:${dropdown_min}S`;
   return code;
 };
 
-javascriptGenerator['bp_tile_command'] = function (block) {
-  var value_tile = javascriptGenerator.valueToCode(
-    block,
-    'TILE',
-    javascriptGenerator.ORDER_NONE
-  );
-  var dropdown_command = block.getFieldValue('COMMAND');
-  // TODO: Assemble javascriptGenerator into code variable.
-  var code = `sendTileCommand(${value_tile}, "${dropdown_command}");\n`;
-  return code;
-};
-
-javascriptGenerator['bp_tile_onchange'] = function (block) {
-  var value_tile = javascriptGenerator.valueToCode(
-    block,
-    'TILE',
-    javascriptGenerator.ORDER_NONE
-  );
-  var statements_callback = javascriptGenerator.statementToCode(
-    block,
-    'CALLBACK'
-  );
-  statements_callback = statements_callback.replace('\n', '  \n');
-  var code = `onTileChange(${value_tile}, () => {\n${statements_callback}});\n`;
-  return code;
-};
-
-javascriptGenerator['bp_tile_trigger'] = function (block) {
-  var text_trigger = block.getFieldValue('TRIGGER');
-  var statements_callback = javascriptGenerator.statementToCode(
-    block,
-    'ONTRIGGER'
-  );
-  statements_callback = statements_callback.replace('\n', '  \n');
-  // TODO: Assemble javascriptGenerator into code variable.
-  var code = `onTileTrigger("${text_trigger}", () => {\n${statements_callback}});\n`;
+javascriptGenerator['started_at_quickly'] = function (block) {
+  var dropdown_hour = block.getFieldValue('hour');
+  var dropdown_min = block.getFieldValue('min');
+  // TODO: Assemble JavaScript into code variable.
+  var code = `!${dropdown_hour}:${dropdown_min}SQ`;
   return code;
 };

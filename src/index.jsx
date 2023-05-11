@@ -15,6 +15,7 @@ function App() {
   const [Workspace, setWorkSpace] = useState('');
   const onOpenModal = () => {
     const code = javascriptGenerator.workspaceToCode(Workspace);
+    console.log(code);
     const qrCanvas = new QRCodeCanvas(code);
     setOpen(true);
     setChanges(qrCanvas.toDataUrl());
@@ -28,7 +29,7 @@ function App() {
   return (
     <div>
       <h1>GO PRO BLOCKLY</h1>
-      <button onClick={onOpenModal}>SEE CODE</button>
+      <button className='generateQrCodeBtn' onClick={onOpenModal}>Generate Qr Code</button>
       <BlocklyComponent style={{ height: '100vh' }}>
         <OnUpdated
           onMounted={(ws) => {

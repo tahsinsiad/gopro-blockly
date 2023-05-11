@@ -15,3 +15,12 @@
     font-size: 25px;
     font-weight: 600;
   }
+
+  .generateQrCodeBtn {
+    padding: 10px;
+    border: 0px solid;
+    border-radius: 10px;
+    background: #00b5c9;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
