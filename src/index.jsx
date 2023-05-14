@@ -23,9 +23,7 @@ function App() {
   const onCloseModal = () => {
     setOpen(false);
   }
-  useEffect(() => {
-    return () => localStorage.removeItem('goProCmd')
-  }, []);
+
   return (
     <div>
       <h1>GO PRO BLOCKLY</h1>
@@ -36,9 +34,9 @@ function App() {
             try {
               const xml_text = localStorage.getItem('__ws_save');
               const xml = Blockly.Xml.textToDom(xml_text);
-              Blockly.Xml.domToWorkspace(ws, xml);
+              // Blockly.Xml.domToWorkspace(xml, ws);
             } catch (e) {
-              // console.log(e);
+              console.log(e);
             }
           }}
           onUpdated={(e, ws) => {

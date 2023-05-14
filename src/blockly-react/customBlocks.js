@@ -178,7 +178,7 @@ Blockly.Blocks['basic_math_op'] = {
     );
     this.appendValueInput('VAR_B').setCheck('Number');
     this.setInputsInline(true);
-    this.setOutput(true, null);
+    this.setOutput(true, 'Number');
     this.setColour(230);
     this.setTooltip('');
     this.setHelpUrl('');
@@ -193,7 +193,7 @@ Blockly.Blocks['special_math_op'] = {
         new Blockly.FieldDropdown([['log', '#']]),
         'special_math_ops'
       );
-    this.setOutput(true, null);
+    this.setOutput(true, 'Number');
     this.setColour(230);
     this.setTooltip('');
     this.setHelpUrl('');
@@ -202,7 +202,7 @@ Blockly.Blocks['special_math_op'] = {
 
 Blockly.Blocks['print'] = {
   init: function () {
-    this.appendValueInput('print').setCheck(null).appendField('print');
+    this.appendValueInput('print').setCheck('Array').appendField('print');
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(135);
@@ -219,15 +219,13 @@ Blockly.Blocks['time_picker'] = {
         new Blockly.FieldDropdown([
           ['>', '>'],
           ['<', '<'],
-          ['>=', '>='],
-          ['<=', '<='],
         ]),
         'comparison_op'
       )
       .appendField(new Blockly.FieldDropdown(hourGenerator()), 'hour')
       .appendField(':')
       .appendField(new Blockly.FieldDropdown(minuteGenerator()), 'min');
-    this.setOutput(true, null);
+    this.setOutput(true, 'Boolean');
     this.setColour(230);
     this.setTooltip('');
     this.setHelpUrl('');
@@ -237,7 +235,7 @@ Blockly.Blocks['time_picker'] = {
 Blockly.Blocks['set_var_system'] = {
   init: function () {
     this.appendValueInput('set_system_defined_val')
-      .setCheck(null)
+      .setCheck('Number')
       .appendField('set the value of')
       .appendField(
         new Blockly.FieldDropdown([
@@ -306,6 +304,117 @@ Blockly.Blocks['started_at_quickly'] = {
     this.setHelpUrl('');
   },
 };
+
+Blockly.Blocks['custom_if'] = {
+  init: function () {
+    this.appendValueInput('IF').setCheck('Boolean').appendField('if');
+    this.appendStatementInput('IFDO').setCheck(null);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+  },
+};
+
+Blockly.Blocks['custom_else'] = {
+  init: function () {
+    this.appendStatementInput('CUSTOM_ELSE').setCheck(null).appendField('else');
+    this.setPreviousStatement(true, 'if');
+    this.setColour(230);
+    this.setTooltip('');
+    this.setHelpUrl('');
+  },
+};
+
+Blockly.Blocks['customized_if_else'] = {
+  init: function () {
+    this.appendValueInput('CUSTOM_IF').setCheck('Boolean').appendField('if');
+    this.appendStatementInput('IFDO').setCheck(null).appendField('do');
+    this.appendStatementInput('ELSEDO')
+      .setCheck(null)
+      .setAlign(Blockly.ALIGN_RIGHT)
+      .appendField('else');
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip('');
+    this.setHelpUrl('');
+  },
+};
+
+Blockly.Blocks['customized_logic_compare'] = {
+  init: function () {
+    this.appendValueInput('VAR_A').setCheck('Array');
+    this.appendDummyInput().appendField(
+      new Blockly.FieldDropdown([
+        ['>', '>'],
+        ['<', '<'],
+      ]),
+      'comapre_op'
+    );
+    this.appendValueInput('VAR_B').setCheck(['Array', 'Number']);
+    this.setInputsInline(true);
+    this.setOutput(true, 'Boolean');
+    this.setColour(230);
+    this.setTooltip('');
+    this.setHelpUrl('');
+  },
+};
+
+javascriptGenerator['customized_logic_compare'] = function (block) {
+  var value_var_a = javascriptGenerator.valueToCode(
+    block,
+    'VAR_A',
+    javascriptGenerator.ORDER_ATOMIC
+  );
+  var dropdown_comapre_op = block.getFieldValue('comapre_op');
+  var value_var_b = javascriptGenerator.valueToCode(
+    block,
+    'VAR_B',
+    javascriptGenerator.ORDER_ATOMIC
+  );
+  // TODO: Assemble JavaScript into code variable.
+  var code = `${dropdown_comapre_op}${value_var_a}${value_var_b}`;
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, javascriptGenerator.ORDER_ATOMIC];
+};
+
+javascriptGenerator['customized_if_else'] = function (block) {
+  var value_custom_if = javascriptGenerator.valueToCode(
+    block,
+    'CUSTOM_IF',
+    javascriptGenerator.ORDER_ATOMIC
+  );
+  var statements_ifdo = javascriptGenerator.statementToCode(block, 'IFDO');
+  var statements_elsedo = javascriptGenerator.statementToCode(block, 'ELSEDO');
+  const renderElseStatementValue = statements_elsedo?.length
+    ? `~${statements_elsedo?.trim()}`
+    : '';
+  // TODO: Assemble JavaScript into code variable.
+  var code = `${value_custom_if}${statements_ifdo?.trim()}${renderElseStatementValue}`;
+  return code;
+};
+
+// javascriptGenerator['custom_if'] = function (block) {
+//   var value_if = javascriptGenerator.valueToCode(
+//     block,
+//     'IF',
+//     javascriptGenerator.ORDER_ATOMIC
+//   );
+//   var statements_ifdo = javascriptGenerator.statementToCode(block, 'IFDO');
+//   // TODO: Assemble JavaScript into code variable.
+//   var code = '...;\n';
+//   return code;
+// };
+
+// javascriptGenerator['custom_else'] = function (block) {
+//   var statements_custom_else = javascriptGenerator.statementToCode(
+//     block,
+//     'CUSTOM_ELSE'
+//   );
+//   // TODO: Assemble JavaScript into code variable.
+//   var code = '...;\n';
+//   return code;
+// };
 
 javascriptGenerator['set_var'] = function (block) {
   var dropdown_name = block.getFieldValue('USER_DEFINED_VAR');
