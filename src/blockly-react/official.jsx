@@ -22,10 +22,6 @@ export const Xml = React.forwardRef(function(props, ref) {
 export const officialToolbox = (
   <React.Fragment>
     <Category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">
-      {/* <Block type="controls_if" />
-      <Block type="logic_compare" /> */}
-      {/* <Block type="custom_if" />
-      <Block type="custom_else"/> */}
       <Block type="customized_if_else" />
       <Block type="customized_logic_compare" />
     </Category>
@@ -38,6 +34,7 @@ export const officialToolbox = (
     </Category>
     <Category name="%{BKY_CATTEXT}" colour="%{BKY_TEXTS_HUE}">
       <Block type="print" />
+      <Block type="text_print" />
     </Category>
   </React.Fragment>
 );

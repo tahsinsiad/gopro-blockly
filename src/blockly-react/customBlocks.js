@@ -40,6 +40,11 @@ import { BlocklyReactField } from './customFields';
 import { getOperatorsAndVariables } from '../utils/findOperatorFromString';
 import { getHourMinuteFromProp } from '../utils/timeUtils';
 import { hourGenerator, minuteGenerator } from '../utils/hourMinGenerator';
+import {
+  BLOCKLY_DEFAULT_TYPE,
+  MATH_OPERATION_TYPE,
+  VARIABLE_LIST_TYPE,
+} from '../utils/customBlocklyType';
 
 Blockly.Blocks['bp_gopro_start'] = {
   init: function () {
@@ -47,7 +52,7 @@ Blockly.Blocks['bp_gopro_start'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
-    this.setTooltip('改变数值组件的数值');
+    this.setTooltip('');
     this.setHelpUrl('');
   },
 };
@@ -58,7 +63,7 @@ Blockly.Blocks['bp_gopro_end'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
-    this.setTooltip('改变数值组件的数值');
+    this.setTooltip('');
     this.setHelpUrl('');
   },
 };
@@ -69,7 +74,7 @@ Blockly.Blocks['bp_gopro_upload'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
-    this.setTooltip('改变数值组件的数值');
+    this.setTooltip('');
     this.setHelpUrl('');
   },
 };
@@ -80,7 +85,7 @@ Blockly.Blocks['bp_gopro_repeat'] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
-    this.setTooltip('改变数值组件的数值');
+    this.setTooltip('');
     this.setHelpUrl('');
   },
 };
@@ -92,7 +97,7 @@ Blockly.Blocks['bp_tile_pick'] = {
       .appendField(new Blockly.FieldTextInput('A Tile'), 'TILE');
     this.setOutput(true, 'Tile');
     this.setColour(150);
-    this.setTooltip('选取一个工作区域内的组件');
+    this.setTooltip('');
     this.setHelpUrl('');
   },
 };
@@ -103,7 +108,7 @@ Blockly.Blocks['bp_tile_pick_quickly'] = {
       .appendField(new Blockly.FieldTextInput('A Tile'), 'TILE');
     this.setOutput(true, 'Tile');
     this.setColour(150);
-    this.setTooltip('选取一个工作区域内的组件');
+    this.setTooltip('');
     this.setHelpUrl('');
   },
 };
@@ -111,7 +116,13 @@ Blockly.Blocks['bp_tile_pick_quickly'] = {
 Blockly.Blocks['set_var'] = {
   init: function () {
     this.appendValueInput('set_user_defined_val')
-      .setCheck(null)
+      .setCheck([
+        BLOCKLY_DEFAULT_TYPE.NUMBER,
+        VARIABLE_LIST_TYPE.SYSTEM_DEFINED,
+        VARIABLE_LIST_TYPE.USER_DEFINED,
+        MATH_OPERATION_TYPE.ARITHMETIC,
+        MATH_OPERATION_TYPE.LOGARITHMIC,
+      ])
       .appendField('set the value of')
       .appendField(
         new Blockly.FieldDropdown([
@@ -144,7 +155,7 @@ Blockly.Blocks['system_defined_var_list'] = {
       ]),
       'SYSTEM_DEFINED_VAR_LIST'
     );
-    this.setOutput(true, null);
+    this.setOutput(true, VARIABLE_LIST_TYPE.SYSTEM_DEFINED);
     this.setColour(230);
     this.setTooltip('');
     this.setHelpUrl('');
@@ -157,7 +168,7 @@ Blockly.Blocks['number_input'] = {
       new Blockly.FieldNumber(0),
       'number_input'
     );
-    this.setOutput(true, 'Number');
+    this.setOutput(true, BLOCKLY_DEFAULT_TYPE.NUMBER);
     this.setColour(120);
     this.setTooltip('');
     this.setHelpUrl('');
@@ -178,7 +189,7 @@ Blockly.Blocks['basic_math_op'] = {
     );
     this.appendValueInput('VAR_B').setCheck('Number');
     this.setInputsInline(true);
-    this.setOutput(true, 'Number');
+    this.setOutput(true, MATH_OPERATION_TYPE.ARITHMETIC);
     this.setColour(230);
     this.setTooltip('');
     this.setHelpUrl('');
@@ -193,7 +204,7 @@ Blockly.Blocks['special_math_op'] = {
         new Blockly.FieldDropdown([['log', '#']]),
         'special_math_ops'
       );
-    this.setOutput(true, 'Number');
+    this.setOutput(true, MATH_OPERATION_TYPE.LOGARITHMIC);
     this.setColour(230);
     this.setTooltip('');
     this.setHelpUrl('');
@@ -202,7 +213,9 @@ Blockly.Blocks['special_math_op'] = {
 
 Blockly.Blocks['print'] = {
   init: function () {
-    this.appendValueInput('print').setCheck('Array').appendField('print');
+    this.appendValueInput('print')
+      .setCheck([BLOCKLY_DEFAULT_TYPE.STRING, VARIABLE_LIST_TYPE.USER_DEFINED])
+      .appendField('print');
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(135);
@@ -225,7 +238,7 @@ Blockly.Blocks['time_picker'] = {
       .appendField(new Blockly.FieldDropdown(hourGenerator()), 'hour')
       .appendField(':')
       .appendField(new Blockly.FieldDropdown(minuteGenerator()), 'min');
-    this.setOutput(true, 'Boolean');
+    this.setOutput(true, BLOCKLY_DEFAULT_TYPE.BOOLEAN);
     this.setColour(230);
     this.setTooltip('');
     this.setHelpUrl('');
@@ -235,7 +248,7 @@ Blockly.Blocks['time_picker'] = {
 Blockly.Blocks['set_var_system'] = {
   init: function () {
     this.appendValueInput('set_system_defined_val')
-      .setCheck('Number')
+      .setCheck(BLOCKLY_DEFAULT_TYPE.NUMBER)
       .appendField('set the value of')
       .appendField(
         new Blockly.FieldDropdown([
@@ -268,7 +281,7 @@ Blockly.Blocks['user_defined_var_list'] = {
       ]),
       'USER_DEFINED_VAR_LIST'
     );
-    this.setOutput(true, null);
+    this.setOutput(true, VARIABLE_LIST_TYPE.USER_DEFINED);
     this.setColour(230);
     this.setTooltip('');
     this.setHelpUrl('');
@@ -305,29 +318,31 @@ Blockly.Blocks['started_at_quickly'] = {
   },
 };
 
-Blockly.Blocks['custom_if'] = {
-  init: function () {
-    this.appendValueInput('IF').setCheck('Boolean').appendField('if');
-    this.appendStatementInput('IFDO').setCheck(null);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(230);
-  },
-};
+// Blockly.Blocks['custom_if'] = {
+//   init: function () {
+//     this.appendValueInput('IF').setCheck('Boolean').appendField('if');
+//     this.appendStatementInput('IFDO').setCheck(null);
+//     this.setPreviousStatement(true, null);
+//     this.setNextStatement(true, null);
+//     this.setColour(230);
+//   },
+// };
 
-Blockly.Blocks['custom_else'] = {
-  init: function () {
-    this.appendStatementInput('CUSTOM_ELSE').setCheck(null).appendField('else');
-    this.setPreviousStatement(true, 'if');
-    this.setColour(230);
-    this.setTooltip('');
-    this.setHelpUrl('');
-  },
-};
+// Blockly.Blocks['custom_else'] = {
+//   init: function () {
+//     this.appendStatementInput('CUSTOM_ELSE').setCheck(null).appendField('else');
+//     this.setPreviousStatement(true, 'if');
+//     this.setColour(230);
+//     this.setTooltip('');
+//     this.setHelpUrl('');
+//   },
+// };
 
 Blockly.Blocks['customized_if_else'] = {
   init: function () {
-    this.appendValueInput('CUSTOM_IF').setCheck('Boolean').appendField('if');
+    this.appendValueInput('CUSTOM_IF')
+      .setCheck(BLOCKLY_DEFAULT_TYPE.BOOLEAN)
+      .appendField('if');
     this.appendStatementInput('IFDO').setCheck(null).appendField('do');
     this.appendStatementInput('ELSEDO')
       .setCheck(null)
@@ -343,7 +358,10 @@ Blockly.Blocks['customized_if_else'] = {
 
 Blockly.Blocks['customized_logic_compare'] = {
   init: function () {
-    this.appendValueInput('VAR_A').setCheck('Array');
+    this.appendValueInput('VAR_A').setCheck([
+      VARIABLE_LIST_TYPE.USER_DEFINED,
+      VARIABLE_LIST_TYPE.SYSTEM_DEFINED,
+    ]);
     this.appendDummyInput().appendField(
       new Blockly.FieldDropdown([
         ['>', '>'],
@@ -351,13 +369,37 @@ Blockly.Blocks['customized_logic_compare'] = {
       ]),
       'comapre_op'
     );
-    this.appendValueInput('VAR_B').setCheck(['Array', 'Number']);
+    this.appendValueInput('VAR_B').setCheck([
+      VARIABLE_LIST_TYPE.USER_DEFINED,
+      BLOCKLY_DEFAULT_TYPE.NUMBER,
+    ]);
     this.setInputsInline(true);
-    this.setOutput(true, 'Boolean');
+    this.setOutput(true, BLOCKLY_DEFAULT_TYPE.BOOLEAN);
     this.setColour(230);
     this.setTooltip('');
     this.setHelpUrl('');
   },
+};
+
+Blockly.Blocks['text_print'] = {
+  init: function () {
+    this.appendDummyInput()
+      .appendField('print')
+      .appendField(new Blockly.FieldTextInput('Hello World'), 'TEXT_PRINT');
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(120);
+    this.setTooltip('');
+    this.setHelpUrl('');
+  },
+};
+
+javascriptGenerator['text_print'] = function (block) {
+  console.log(block);
+  var text_print_val = block.getFieldValue('TEXT_PRINT');
+  // TODO: Assemble JavaScript into code variable.
+  var code = `"${text_print_val}"`;
+  return code;
 };
 
 javascriptGenerator['customized_logic_compare'] = function (block) {
@@ -386,9 +428,11 @@ javascriptGenerator['customized_if_else'] = function (block) {
   );
   var statements_ifdo = javascriptGenerator.statementToCode(block, 'IFDO');
   var statements_elsedo = javascriptGenerator.statementToCode(block, 'ELSEDO');
+
   const renderElseStatementValue = statements_elsedo?.length
     ? `~${statements_elsedo?.trim()}`
     : '';
+
   // TODO: Assemble JavaScript into code variable.
   var code = `${value_custom_if}${statements_ifdo?.trim()}${renderElseStatementValue}`;
   return code;
