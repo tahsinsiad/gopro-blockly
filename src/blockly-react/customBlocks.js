@@ -395,11 +395,11 @@ Blockly.Blocks['text_print'] = {
 };
 
 javascriptGenerator['text_print'] = function (block) {
-  console.log(block);
   var text_print_val = block.getFieldValue('TEXT_PRINT');
+  console.log(text_print_val);
+
   // TODO: Assemble JavaScript into code variable.
-  var code = `"${text_print_val}"`;
-  return code;
+  return text_print_val;
 };
 
 javascriptGenerator['customized_logic_compare'] = function (block) {
@@ -428,37 +428,26 @@ javascriptGenerator['customized_if_else'] = function (block) {
   );
   var statements_ifdo = javascriptGenerator.statementToCode(block, 'IFDO');
   var statements_elsedo = javascriptGenerator.statementToCode(block, 'ELSEDO');
+  const trimmedStatements = statements_ifdo?.trim();
+
+  const printBlock = block.getChildren().find((ch) => ch.type === 'text_print');
+  const printBlockValue = printBlock.getFieldValue('TEXT_PRINT');
+  const hasPrintBlockNextBlock = printBlock.getNextBlock();
 
   const renderElseStatementValue = statements_elsedo?.length
     ? `~${statements_elsedo?.trim()}`
     : '';
 
+  const finalIfStatement =
+    trimmedStatements?.length &&
+    (hasPrintBlockNextBlock || statements_elsedo?.length)
+      ? trimmedStatements.replace(printBlockValue, `+"${printBlockValue}"+`)
+      : trimmedStatements.replace(printBlockValue, `+"${printBlockValue}`);
+
   // TODO: Assemble JavaScript into code variable.
-  var code = `${value_custom_if}${statements_ifdo?.trim()}${renderElseStatementValue}`;
+  var code = `${value_custom_if}${finalIfStatement}${renderElseStatementValue}`;
   return code;
 };
-
-// javascriptGenerator['custom_if'] = function (block) {
-//   var value_if = javascriptGenerator.valueToCode(
-//     block,
-//     'IF',
-//     javascriptGenerator.ORDER_ATOMIC
-//   );
-//   var statements_ifdo = javascriptGenerator.statementToCode(block, 'IFDO');
-//   // TODO: Assemble JavaScript into code variable.
-//   var code = '...;\n';
-//   return code;
-// };
-
-// javascriptGenerator['custom_else'] = function (block) {
-//   var statements_custom_else = javascriptGenerator.statementToCode(
-//     block,
-//     'CUSTOM_ELSE'
-//   );
-//   // TODO: Assemble JavaScript into code variable.
-//   var code = '...;\n';
-//   return code;
-// };
 
 javascriptGenerator['set_var'] = function (block) {
   var dropdown_name = block.getFieldValue('USER_DEFINED_VAR');

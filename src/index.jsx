@@ -27,7 +27,11 @@ function App() {
   return (
     <div>
       <h1>GO PRO BLOCKLY</h1>
-      <button className='generateQrCodeBtn' onClick={onOpenModal}>Generate Qr Code</button>
+      <div className='actionButtonWrapper'>
+        <button className='actionBUtton generateQrCodeBtn' onClick={onOpenModal}>Generate Qr Code</button>
+        <button className='actionButton saveButton' onClick={onOpenModal}>Save Block</button>
+        <button className='actionButton historyButton' onClick={onOpenModal}>History</button>
+      </div>
       <BlocklyComponent style={{ height: '100vh' }}>
         <OnUpdated
           onMounted={(ws) => {

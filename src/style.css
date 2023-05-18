@@ -16,11 +16,33 @@
     font-weight: 600;
   }
 
-  .generateQrCodeBtn {
+  .actionButton {
     padding: 10px;
     border: 0px solid;
     border-radius: 10px;
-    background: #00b5c9;
     font-weight: 600;
+  }
+
+  .actionButton.generateQrCodeBtn {
+    background: #000;
+    color: #fff;
+  }
+
+  .actionButton.saveButton {
+    background: rgb(4, 61, 4);
+    color: #fff;
+  }
+
+  .actionButton.historyButton {
+    background: rgb(5, 5, 110);
+    color: #fff;
+  }
+  
+  .actionButtonWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    column-gap: 10px;
     margin-bottom: 16px;
   }
