@@ -21,6 +21,13 @@
     border: 0px solid;
     border-radius: 10px;
     font-weight: 600;
+    cursor: pointer;
+  }
+
+  .actionButton:disabled {
+    background: #aca9a9 !important;
+    color: #0000004c !important;
+    cursor: not-allowed;
   }
 
   .actionButton.generateQrCodeBtn {
@@ -41,8 +48,50 @@
   .actionButtonWrapper {
     width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     column-gap: 10px;
     margin-bottom: 16px;
+  }
+
+  .inputwrapper {
+    display: flex;
+    column-gap: 10px;
+    align-items: center;
+  }
+
+  .titleInput {
+    padding: 5px;
+  }
+
+  .listWrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin-top: 20px;
+  }
+
+  .listItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 5px;
+    border-bottom: 1px solid #afadad;
+    background-color: #fff;
+  }
+
+  .listItemActionButtonWrapper {
+    display: flex;
+    column-gap: 16px;
+  }
+
+  .listItemActionButton {
+    padding: 5px;
+    color: #4674e8;
+    line-height: 0;
+    border: none;
+    outline: none;
+    text-decoration: underline;
+    background: none;
+    cursor: pointer;
   }

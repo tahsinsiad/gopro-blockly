@@ -1,6 +1,6 @@
 {
-  "name": "react-ts",
-  "version": "0.0.0",
+  "name": "gopro-blockly",
+  "version": "1.0.0",
   "private": true,
   "homepage": "http://tahsinsiad.github.io/gopro-blockly",
   "dependencies": {
