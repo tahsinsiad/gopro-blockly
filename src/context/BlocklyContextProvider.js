@@ -6,6 +6,11 @@ const BlocklyContextProvider = ({ children, localStorageBlockList }) => {
   const [blockTitle, setBlockTitle] = useState('New Block');
   const [selectedBlock, setSelectedBlock] = useState(null);
   const [blocksList, setBlocksList] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
+  const [openHistoryModal, setOpenHistoryModal] = useState(false);
+  const [workspace, setWorkSpace] = useState('');
+  const [changes, setChanges] = useState('');
+  const [isSaveBtnEnable, setIsSaveBtnEnable] = useState(false);
 
   useEffect(() => {
     console.log(localStorageBlockList);
@@ -21,6 +26,16 @@ const BlocklyContextProvider = ({ children, localStorageBlockList }) => {
         blockTitle,
         blocksList,
         selectedBlock,
+        openModal,
+        openHistoryModal,
+        workspace,
+        changes,
+        isSaveBtnEnable,
+        setIsSaveBtnEnable,
+        setChanges,
+        setOpenModal,
+        setOpenHistoryModal,
+        setWorkSpace,
         setSelectedBlock,
         setBlocksList,
         setBlockTitle,

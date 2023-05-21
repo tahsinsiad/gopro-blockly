@@ -187,7 +187,7 @@ Blockly.Blocks['basic_math_op'] = {
       ]),
       'math_op'
     );
-    this.appendValueInput('VAR_B').setCheck('Number');
+    this.appendValueInput('VAR_B').setCheck(BLOCKLY_DEFAULT_TYPE.NUMBER);
     this.setInputsInline(true);
     this.setOutput(true, MATH_OPERATION_TYPE.ARITHMETIC);
     this.setColour(230);
@@ -431,8 +431,8 @@ javascriptGenerator['customized_if_else'] = function (block) {
   const trimmedStatements = statements_ifdo?.trim();
 
   const printBlock = block.getChildren().find((ch) => ch.type === 'text_print');
-  const printBlockValue = printBlock.getFieldValue('TEXT_PRINT');
-  const hasPrintBlockNextBlock = printBlock.getNextBlock();
+  const printBlockValue = printBlock?.getFieldValue('TEXT_PRINT');
+  const hasPrintBlockNextBlock = printBlock?.getNextBlock();
 
   const renderElseStatementValue = statements_elsedo?.length
     ? `~${statements_elsedo?.trim()}`

@@ -2,96 +2,111 @@
     background: #b2dbbf;
     min-width: 400px;
     width: 100%;
+    min-height: 400px;
   }
 
-  .qrGeneratorWrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
-  
-  .heading {
-    font-size: 25px;
-    font-weight: 600;
+  .customModal.confirmation {
+    min-height: auto !important;
   }
 
-  .actionButton {
-    padding: 10px;
-    border: 0px solid;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
-  }
+.qrGeneratorWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 
-  .actionButton:disabled {
-    background: #aca9a9 !important;
-    color: #0000004c !important;
-    cursor: not-allowed;
-  }
+.heading {
+  font-size: 25px;
+  font-weight: 600;
+}
 
-  .actionButton.generateQrCodeBtn {
-    background: #000;
-    color: #fff;
-  }
+.actionButton {
+  padding: 10px;
+  border: 0px solid;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 100px;
+}
 
-  .actionButton.saveButton {
-    background: rgb(4, 61, 4);
-    color: #fff;
-  }
+.actionButton:disabled {
+  background: #aca9a9 !important;
+  color: #0000004c !important;
+  cursor: not-allowed;
+}
 
-  .actionButton.historyButton {
-    background: rgb(5, 5, 110);
-    color: #fff;
-  }
-  
-  .actionButtonWrapper {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    column-gap: 10px;
-    margin-bottom: 16px;
-  }
+.actionButton.generateQrCodeBtn {
+  background: #000;
+  color: #fff;
+}
 
-  .inputwrapper {
-    display: flex;
-    column-gap: 10px;
-    align-items: center;
-  }
+.actionButton.saveButton {
+  background: rgb(4, 61, 4);
+  color: #fff;
+}
 
-  .titleInput {
-    padding: 5px;
-  }
+.actionButton.historyButton {
+  background: rgb(5, 5, 110);
+  color: #fff;
+}
 
-  .listWrapper {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    margin-top: 20px;
-  }
+.actionButton.delete {
+  background: #f00;
+  color: #fff;
+}
 
-  .listItem {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 5px;
-    border-bottom: 1px solid #afadad;
-    background-color: #fff;
-  }
+.actionButtonWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 10px;
+  margin: 10px 0px;
+}
 
-  .listItemActionButtonWrapper {
-    display: flex;
-    column-gap: 16px;
-  }
+.inputwrapper {
+  display: flex;
+  column-gap: 10px;
+  align-items: center;
+}
 
-  .listItemActionButton {
-    padding: 5px;
-    color: #4674e8;
-    line-height: 0;
-    border: none;
-    outline: none;
-    text-decoration: underline;
-    background: none;
-    cursor: pointer;
-  }
+.titleInput {
+  padding: 5px;
+  min-width: 400px;
+  border: none;
+  border-bottom: 1px solid;
+  font-size: 20px;
+}
+
+.listWrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+.listItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 5px;
+  border-bottom: 1px solid #afadad;
+  background-color: #fff;
+}
+
+.listItemActionButtonWrapper {
+  display: flex;
+  column-gap: 16px;
+}
+
+.listItemActionButton {
+  padding: 5px;
+  color: #4674e8;
+  line-height: 0;
+  border: none;
+  outline: none;
+  text-decoration: underline;
+  background: none;
+  cursor: pointer;
+}
