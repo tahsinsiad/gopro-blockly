@@ -45,6 +45,8 @@ import {
   MATH_OPERATION_TYPE,
   VARIABLE_LIST_TYPE,
 } from '../utils/customBlocklyType';
+import { generateAllChildrenBlocks } from '../utils/getAllChidrenInsideBlock';
+import { ignoredBlocks } from '../utils/constants';
 
 Blockly.Blocks['bp_gopro_start'] = {
   init: function () {
@@ -394,12 +396,44 @@ Blockly.Blocks['text_print'] = {
   },
 };
 
+Blockly.Blocks['goto_loop'] = {
+  init: function () {
+    this.appendDummyInput().appendField('goto loop');
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip('');
+    this.setHelpUrl('');
+  },
+};
+
+Blockly.Blocks['loop'] = {
+  init: function () {
+    this.appendStatementInput('loop').setCheck(null).appendField('loop:');
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+    this.setTooltip('');
+    this.setHelpUrl('');
+  },
+};
+
+javascriptGenerator['loop'] = function (block) {
+  var statements_loop = javascriptGenerator.statementToCode(block, 'loop');
+  // TODO: Assemble JavaScript into code variable.
+  var code = statements_loop?.trim();
+  return code;
+};
+
+javascriptGenerator['goto_loop'] = function (block) {
+  // TODO: Assemble JavaScript into code variable.
+  var code = '!R3';
+  return code;
+};
+
 javascriptGenerator['text_print'] = function (block) {
   var text_print_val = block.getFieldValue('TEXT_PRINT');
-  console.log(text_print_val);
-
-  // TODO: Assemble JavaScript into code variable.
-  return text_print_val;
+  return `"${text_print_val}"`;
 };
 
 javascriptGenerator['customized_logic_compare'] = function (block) {
@@ -426,26 +460,51 @@ javascriptGenerator['customized_if_else'] = function (block) {
     'CUSTOM_IF',
     javascriptGenerator.ORDER_ATOMIC
   );
-  var statements_ifdo = javascriptGenerator.statementToCode(block, 'IFDO');
-  var statements_elsedo = javascriptGenerator.statementToCode(block, 'ELSEDO');
-  const trimmedStatements = statements_ifdo?.trim();
+  // var statements_ifdo = javascriptGenerator.statementToCode(block, 'IFDO');
+  // var statements_elsedo = javascriptGenerator.statementToCode(block, 'ELSEDO');
+  // const trimmedStatements = statements_ifdo?.trim();
 
-  const printBlock = block.getChildren().find((ch) => ch.type === 'text_print');
-  const printBlockValue = printBlock?.getFieldValue('TEXT_PRINT');
-  const hasPrintBlockNextBlock = printBlock?.getNextBlock();
+  const children = block.getChildren(true);
 
-  const renderElseStatementValue = statements_elsedo?.length
-    ? `~${statements_elsedo?.trim()}`
+  const firstChildOfIfBlock = children[1] || null;
+  const firstChildOfElseBlock = children[2] || null;
+
+  console.log({ firstChildOfIfBlock });
+
+  const allChildsOfIfBlock = firstChildOfIfBlock
+    ? generateAllChildrenBlocks(firstChildOfIfBlock, [firstChildOfIfBlock])
+    : [];
+
+  const allChildsOfElseBlock = firstChildOfElseBlock
+    ? generateAllChildrenBlocks(firstChildOfElseBlock, [firstChildOfElseBlock])
+    : [];
+
+  const childsToCodeIfBlock = allChildsOfIfBlock
+    .filter((block) => !ignoredBlocks.includes(block?.type))
+    .map((block) => javascriptGenerator[block?.type](block))
+    .join('+');
+
+  const childsToCodeElseBlock = allChildsOfElseBlock
+    .filter((block) => !ignoredBlocks.includes(block?.type))
+    .map((block) => javascriptGenerator[block?.type](block))
+    .join('+');
+
+  // const printBlock = block.getChildren().find((ch) => ch.type === 'text_print');
+  // const printBlockValue = printBlock?.getFieldValue('TEXT_PRINT');
+  // const hasPrintBlockNextBlock = printBlock?.getNextBlock();
+
+  const renderElseStatementCode = childsToCodeElseBlock?.length
+    ? `~${childsToCodeElseBlock}`
     : '';
 
-  const finalIfStatement =
-    trimmedStatements?.length &&
-    (hasPrintBlockNextBlock || statements_elsedo?.length)
-      ? trimmedStatements.replace(printBlockValue, `+"${printBlockValue}"+`)
-      : trimmedStatements.replace(printBlockValue, `+"${printBlockValue}`);
+  // const finalIfStatement =
+  //   trimmedStatements?.length &&
+  //   (hasPrintBlockNextBlock || statements_elsedo?.length)
+  //     ? trimmedStatements.replace(printBlockValue, `+"${printBlockValue}"+`)
+  //     : trimmedStatements.replace(printBlockValue, `+"${printBlockValue}`);
 
   // TODO: Assemble JavaScript into code variable.
-  var code = `${value_custom_if}${finalIfStatement}${renderElseStatementValue}`;
+  var code = `${value_custom_if}${childsToCodeIfBlock}${renderElseStatementCode}`;
   return code;
 };
 
@@ -613,7 +672,12 @@ javascriptGenerator['controls_if'] = function (block) {
     }
     code += ' else {\n' + branchCode + '}';
   }
-  // console.log(code);
+  const test = javascriptGenerator.prefixLines(
+    javascriptGenerator.injectId(javascriptGenerator.STATEMENT_SUFFIX, block),
+    javascriptGenerator.INDENT
+  );
+  console.log('test', test);
+  console.log('branchcode: ', branchCode);
   const { variables, operators } = getOperatorsAndVariables(conditionCode);
   const isTime = variables[0]?.includes('time');
   const variableValue = variables[variables?.length - 1]?.trim();

@@ -13,7 +13,6 @@ const BlocklyContextProvider = ({ children, localStorageBlockList }) => {
   const [isSaveBtnEnable, setIsSaveBtnEnable] = useState(false);
 
   useEffect(() => {
-    console.log(localStorageBlockList);
     const presetBlocks = localStorageBlockList?.length
       ? [...localStorageBlockList]
       : [];

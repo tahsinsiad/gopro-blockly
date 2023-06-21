@@ -27,13 +27,14 @@ const ActionPanel = () => {
     setBlocksList,
     setBlockTitle,
   } = blocklyContext || {};
-
+  // const [cmd, setCmd] = useState('');
   const onOpenModal = () => {
-    debugger;
     const clonedBlocks = [...blocksList];
     const xml = Blockly.Xml.workspaceToDom(workspace);
     const xml_text = Blockly.Xml.domToText(xml);
     const code = javascriptGenerator.workspaceToCode(workspace);
+    // console.log(code);
+    // setCmd(code);
     const qrCanvas = new QRCodeCanvas(code);
     const targetItemIndex = clonedBlocks?.findIndex(
       (cb) => cb?.id === selectedBlock?.id
@@ -80,10 +81,7 @@ const ActionPanel = () => {
   const onCloseModal = () => {
     setOpenModal(false);
   };
-  console.log(
-    workspace,
-    workspace && workspace.getAllBlocks && workspace.getAllBlocks(false)
-  );
+
   return (
     <div className='actionButtonWrapper'>
       <div className='inputwrapper'>
@@ -128,7 +126,18 @@ const ActionPanel = () => {
       >
         <div className='qrGeneratorWrapper'>
           <p className='heading'>Here is your Qr Code</p>
+          {/* <pre>{cmd}</pre> */}
           <img alt='Qr code' src={changes} />
+          <a
+            style={{ marginTop: '20px' }}
+            href={changes}
+            target='_black'
+            download={`${blockTitle}-${new Date().toLocaleString('en-US', {
+              hour12: false,
+            })}.jpeg`}
+          >
+            Download
+          </a>
         </div>
       </Modal>
       <Modal
