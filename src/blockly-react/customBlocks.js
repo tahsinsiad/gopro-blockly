@@ -421,19 +421,26 @@ Blockly.Blocks['loop'] = {
 javascriptGenerator['loop'] = function (block) {
   var statements_loop = javascriptGenerator.statementToCode(block, 'loop');
   // TODO: Assemble JavaScript into code variable.
-  var code = statements_loop?.trim();
+  var code = statements_loop?.trim()?.replace(/;/g, '+');
+  // const loopStatementsLength = code?.length;
+  // if (loopStatementsLength && code[loopStatementsLength - 1] === '+') {
+  //   code = code.substring(
+  //     0,
+  //     loopStatementsLength - 1
+  //   );
+  // }
   return code;
 };
 
 javascriptGenerator['goto_loop'] = function (block) {
   // TODO: Assemble JavaScript into code variable.
-  var code = '!R3';
+  var code = '!R3;';
   return code;
 };
 
 javascriptGenerator['text_print'] = function (block) {
   var text_print_val = block.getFieldValue('TEXT_PRINT');
-  return `"${text_print_val}"`;
+  return `"${text_print_val}";`;
 };
 
 javascriptGenerator['customized_logic_compare'] = function (block) {
@@ -460,41 +467,73 @@ javascriptGenerator['customized_if_else'] = function (block) {
     'CUSTOM_IF',
     javascriptGenerator.ORDER_ATOMIC
   );
-  // var statements_ifdo = javascriptGenerator.statementToCode(block, 'IFDO');
-  // var statements_elsedo = javascriptGenerator.statementToCode(block, 'ELSEDO');
-  // const trimmedStatements = statements_ifdo?.trim();
+  var statements_ifdo = javascriptGenerator.statementToCode(block, 'IFDO');
+  var statements_elsedo = javascriptGenerator.statementToCode(block, 'ELSEDO');
+  let trimmedStatements = statements_ifdo?.trim().replace(/;/g, '+');
+  let trimmedStatementsElse = statements_elsedo?.trim().replace(/;/g, '+');
+  const trimmedStatementsLength = trimmedStatements?.length;
+  const trimmedStatementsElseLength = trimmedStatementsElse?.length;
+  if (
+    trimmedStatementsLength &&
+    trimmedStatements[trimmedStatementsLength - 1] === '+'
+  ) {
+    console.log({
+      trimmedStatements,
+      last: trimmedStatements[trimmedStatementsLength - 1],
+    });
+    trimmedStatements = trimmedStatements.substring(
+      0,
+      trimmedStatementsLength - 1
+    );
+  }
 
-  const children = block.getChildren(true);
+  if (
+    trimmedStatementsElseLength &&
+    trimmedStatementsElse[trimmedStatementsElseLength - 1] === '+'
+  ) {
+    console.log({
+      trimmedStatementsElse,
+      last: trimmedStatementsElse[trimmedStatementsElseLength - 1],
+    });
+    trimmedStatementsElse = trimmedStatementsElse.substring(
+      0,
+      trimmedStatementsElseLength - 1
+    );
+  }
 
-  const firstChildOfIfBlock = children[1] || null;
-  const firstChildOfElseBlock = children[2] || null;
+  // const children = block.getChildren(true);
 
-  console.log({ firstChildOfIfBlock });
+  // const firstChildOfIfBlock = children[1] || null;
+  // const firstChildOfElseBlock = children[2] || null;
 
-  const allChildsOfIfBlock = firstChildOfIfBlock
-    ? generateAllChildrenBlocks(firstChildOfIfBlock, [firstChildOfIfBlock])
-    : [];
+  // const allChildsOfIfBlock = firstChildOfIfBlock
+  //   ? generateAllChildrenBlocks(firstChildOfIfBlock, [firstChildOfIfBlock])
+  //   : [];
 
-  const allChildsOfElseBlock = firstChildOfElseBlock
-    ? generateAllChildrenBlocks(firstChildOfElseBlock, [firstChildOfElseBlock])
-    : [];
+  // const allChildsOfElseBlock = firstChildOfElseBlock
+  //   ? generateAllChildrenBlocks(firstChildOfElseBlock, [firstChildOfElseBlock])
+  //   : [];
 
-  const childsToCodeIfBlock = allChildsOfIfBlock
-    .filter((block) => !ignoredBlocks.includes(block?.type))
-    .map((block) => javascriptGenerator[block?.type](block))
-    .join('+');
+  // const childsToCodeIfBlock = allChildsOfIfBlock
+  //   .filter((block) => !ignoredBlocks.includes(block?.type))
+  //   .map((block) => javascriptGenerator[block?.type](block))
+  //   .join('+');
 
-  const childsToCodeElseBlock = allChildsOfElseBlock
-    .filter((block) => !ignoredBlocks.includes(block?.type))
-    .map((block) => javascriptGenerator[block?.type](block))
-    .join('+');
+  // const childsToCodeElseBlock = allChildsOfElseBlock
+  //   .filter((block) => !ignoredBlocks.includes(block?.type))
+  //   .map((block) => javascriptGenerator[block?.type](block))
+  //   .join('+');
 
   // const printBlock = block.getChildren().find((ch) => ch.type === 'text_print');
   // const printBlockValue = printBlock?.getFieldValue('TEXT_PRINT');
   // const hasPrintBlockNextBlock = printBlock?.getNextBlock();
 
-  const renderElseStatementCode = childsToCodeElseBlock?.length
-    ? `~${childsToCodeElseBlock}`
+  // const renderElseStatementCode = childsToCodeElseBlock?.length
+  //   ? `~${childsToCodeElseBlock}`
+  //   : '';
+
+  const renderElseStatementCode = trimmedStatementsElseLength
+    ? `~${trimmedStatementsElse}`
     : '';
 
   // const finalIfStatement =
@@ -504,7 +543,7 @@ javascriptGenerator['customized_if_else'] = function (block) {
   //     : trimmedStatements.replace(printBlockValue, `+"${printBlockValue}`);
 
   // TODO: Assemble JavaScript into code variable.
-  var code = `${value_custom_if}${childsToCodeIfBlock}${renderElseStatementCode}`;
+  var code = `${value_custom_if}${trimmedStatements}${renderElseStatementCode}`;
   return code;
 };
 
@@ -516,7 +555,7 @@ javascriptGenerator['set_var'] = function (block) {
     javascriptGenerator.ORDER_ATOMIC
   );
 
-  const goProCmd = `=${dropdown_name}${value_set_var}`;
+  const goProCmd = `=${dropdown_name}${value_set_var};`;
   // TODO: Assemble JavaScript into code variable.
   // var code = '...;\n';
   return goProCmd;
@@ -529,7 +568,7 @@ javascriptGenerator['set_var_system'] = function (block) {
     'set_system_defined_val',
     javascriptGenerator.ORDER_ATOMIC
   );
-  const goProCmd = `=${dropdown_name}${value_set_var}`;
+  const goProCmd = `=${dropdown_name}${value_set_var};`;
 
   return goProCmd;
 };
@@ -557,7 +596,7 @@ javascriptGenerator['print'] = function (block) {
     javascriptGenerator.ORDER_ATOMIC
   );
   // TODO: Assemble JavaScript into code variable.
-  var code = `"Value is $${value_print}"`;
+  var code = `"Value is $${value_print}";`;
   return code;
 };
 
@@ -598,21 +637,21 @@ javascriptGenerator['system_defined_var_list'] = function (block) {
 };
 
 javascriptGenerator['bp_gopro_start'] = function (block) {
-  var code = `!S`;
+  var code = `!S;`;
   return code;
 };
 
 javascriptGenerator['bp_gopro_end'] = function (block) {
-  var code = `!E`;
+  var code = `!E;`;
   return code;
 };
 
 javascriptGenerator['bp_gopro_upload'] = function (block) {
-  var code = `!U`;
+  var code = `!U;`;
   return code;
 };
 javascriptGenerator['bp_gopro_repeat'] = function (block) {
-  var code = `!R`;
+  var code = `!R;`;
   return code;
 };
 
@@ -754,7 +793,7 @@ javascriptGenerator['started_at'] = function (block) {
   var dropdown_hour = block.getFieldValue('hour');
   var dropdown_min = block.getFieldValue('min');
   // TODO: Assemble JavaScript into code variable.
-  var code = `!${dropdown_hour}:${dropdown_min}S`;
+  var code = `!${dropdown_hour}:${dropdown_min}S;`;
   return code;
 };
 
@@ -762,6 +801,6 @@ javascriptGenerator['started_at_quickly'] = function (block) {
   var dropdown_hour = block.getFieldValue('hour');
   var dropdown_min = block.getFieldValue('min');
   // TODO: Assemble JavaScript into code variable.
-  var code = `!${dropdown_hour}:${dropdown_min}SQ`;
+  var code = `!${dropdown_hour}:${dropdown_min}SQ;`;
   return code;
 };

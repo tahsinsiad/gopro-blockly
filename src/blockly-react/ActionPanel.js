@@ -6,6 +6,7 @@ import { BlocklyContext } from '../context/BlocklyContextProvider';
 import { generateUUID } from '../utils/generateUUID';
 import Modal from 'react-responsive-modal';
 import BlockList from './BlockList';
+import { generateGoProCmd } from '../utils/generateGoProCmd';
 
 const ActionPanel = () => {
   const blocklyContext = useContext(BlocklyContext);
@@ -27,15 +28,15 @@ const ActionPanel = () => {
     setBlocksList,
     setBlockTitle,
   } = blocklyContext || {};
-  // const [cmd, setCmd] = useState('');
+  const [cmd, setCmd] = useState('');
   const onOpenModal = () => {
     const clonedBlocks = [...blocksList];
     const xml = Blockly.Xml.workspaceToDom(workspace);
     const xml_text = Blockly.Xml.domToText(xml);
     const code = javascriptGenerator.workspaceToCode(workspace);
-    // console.log(code);
-    // setCmd(code);
-    const qrCanvas = new QRCodeCanvas(code);
+    console.log(generateGoProCmd(code));
+    setCmd(generateGoProCmd(code));
+    const qrCanvas = new QRCodeCanvas(generateGoProCmd(code));
     const targetItemIndex = clonedBlocks?.findIndex(
       (cb) => cb?.id === selectedBlock?.id
     );
@@ -126,7 +127,7 @@ const ActionPanel = () => {
       >
         <div className='qrGeneratorWrapper'>
           <p className='heading'>Here is your Qr Code</p>
-          {/* <pre>{cmd}</pre> */}
+          <pre>{cmd}</pre>
           <img alt='Qr code' src={changes} />
           <a
             style={{ marginTop: '20px' }}
