@@ -5,8 +5,8 @@ export const countCharacters = (code) => {
     if (code[i] === '[') {
       charCount.push(i);
     } else if (code[i] === ']') {
-      const trailingPlus = charCount.length > 1 ? '+' : '';
-      res += `!R${charCount.pop()}${trailingPlus}`;
+      //   const trailingPlus = charCount.length > 1 ? '+' : '';
+      res += `!R${charCount.pop()}`;
     } else {
       res += code[i];
     }

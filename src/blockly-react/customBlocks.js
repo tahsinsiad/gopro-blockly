@@ -418,7 +418,7 @@ Blockly.Blocks['loop'] = {
 javascriptGenerator['loop'] = function (block) {
   var statements_loop = javascriptGenerator.statementToCode(block, 'loop');
   // TODO: Assemble JavaScript into code variable.
-  var code = statements_loop?.trim()?.replace(/;/g, '+');
+  var code = statements_loop?.trim()?.replace(/;/g, '');
   // const loopStatementsLength = code?.length;
   // if (loopStatementsLength && code[loopStatementsLength - 1] === '+') {
   //   code = code.substring(
@@ -426,12 +426,12 @@ javascriptGenerator['loop'] = function (block) {
   //     loopStatementsLength - 1
   //   );
   // }
-  return `[${code}]`;
+  return `[${code}`;
 };
 
 javascriptGenerator['goto_loop'] = function (block) {
   // TODO: Assemble JavaScript into code variable.
-  var code = '!R3;';
+  var code = ']';
   return code;
 };
 
