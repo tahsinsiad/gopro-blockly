@@ -7,6 +7,7 @@ import { generateUUID } from '../utils/generateUUID';
 import Modal from 'react-responsive-modal';
 import BlockList from './BlockList';
 import { generateGoProCmd } from '../utils/generateGoProCmd';
+import { countCharacters } from '../utils/countCharacters';
 
 const ActionPanel = () => {
   const blocklyContext = useContext(BlocklyContext);
@@ -34,9 +35,9 @@ const ActionPanel = () => {
     const xml = Blockly.Xml.workspaceToDom(workspace);
     const xml_text = Blockly.Xml.domToText(xml);
     const code = javascriptGenerator.workspaceToCode(workspace);
-    console.log(generateGoProCmd(code));
-    setCmd(generateGoProCmd(code));
-    const qrCanvas = new QRCodeCanvas(generateGoProCmd(code));
+    console.log(generateGoProCmd(countCharacters(code)));
+    setCmd(generateGoProCmd(countCharacters(code)));
+    const qrCanvas = new QRCodeCanvas(generateGoProCmd(countCharacters(code)));
     const targetItemIndex = clonedBlocks?.findIndex(
       (cb) => cb?.id === selectedBlock?.id
     );

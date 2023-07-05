@@ -36,7 +36,6 @@ import { javascriptGenerator } from 'blockly/javascript';
 // javascriptGenerator.ORDER_COMMA = 18; // ,
 // javascriptGenerator.ORDER_NONE = 99; // (...)
 
-import { BlocklyReactField } from './customFields';
 import { getOperatorsAndVariables } from '../utils/findOperatorFromString';
 import { getHourMinuteFromProp } from '../utils/timeUtils';
 import { hourGenerator, minuteGenerator } from '../utils/hourMinGenerator';
@@ -45,8 +44,6 @@ import {
   MATH_OPERATION_TYPE,
   VARIABLE_LIST_TYPE,
 } from '../utils/customBlocklyType';
-import { generateAllChildrenBlocks } from '../utils/getAllChidrenInsideBlock';
-import { ignoredBlocks } from '../utils/constants';
 
 Blockly.Blocks['bp_gopro_start'] = {
   init: function () {
@@ -429,7 +426,7 @@ javascriptGenerator['loop'] = function (block) {
   //     loopStatementsLength - 1
   //   );
   // }
-  return code;
+  return `[${code}]`;
 };
 
 javascriptGenerator['goto_loop'] = function (block) {
