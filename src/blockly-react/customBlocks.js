@@ -343,10 +343,10 @@ Blockly.Blocks['customized_if_else'] = {
       .setCheck(BLOCKLY_DEFAULT_TYPE.BOOLEAN)
       .appendField('if');
     this.appendStatementInput('IFDO').setCheck(null).appendField('do');
-    this.appendStatementInput('ELSEDO')
-      .setCheck(null)
-      .setAlign(Blockly.ALIGN_RIGHT)
-      .appendField('else');
+    // this.appendStatementInput('ELSEDO')
+    //   .setCheck(null)
+    //   .setAlign(Blockly.ALIGN_RIGHT)
+    //   .appendField('else');
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);

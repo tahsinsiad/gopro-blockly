@@ -8,6 +8,10 @@ export const MATH_OPERATION_TYPE = {
   LOGARITHMIC: 'Logarithmic',
 };
 
+export const CUSTOM_TYPE = {
+  CUSTOM_IF: 'CUSTOMIF',
+};
+
 export const BLOCKLY_DEFAULT_TYPE = {
   NUMBER: 'Number',
   STRING: 'String',
