@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/gopro-blockly/static/css/main.fef47844.css",
-    "main.js": "/gopro-blockly/static/js/main.5ead003a.js",
+    "main.js": "/gopro-blockly/static/js/main.6fdb3503.js",
     "index.html": "/gopro-blockly/index.html",
     "main.fef47844.css.map": "/gopro-blockly/static/css/main.fef47844.css.map",
-    "main.5ead003a.js.map": "/gopro-blockly/static/js/main.5ead003a.js.map"
+    "main.6fdb3503.js.map": "/gopro-blockly/static/js/main.6fdb3503.js.map"
   },
   "entrypoints": [
     "static/css/main.fef47844.css",
-    "static/js/main.5ead003a.js"
+    "static/js/main.6fdb3503.js"
   ]
 }
