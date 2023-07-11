@@ -406,7 +406,7 @@ Blockly.Blocks['goto_loop'] = {
 
 Blockly.Blocks['loop'] = {
   init: function () {
-    this.appendStatementInput('loop').setCheck(null).appendField('loop:');
+    this.appendDummyInput().appendField('loop:');
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(230);
@@ -415,18 +415,35 @@ Blockly.Blocks['loop'] = {
   },
 };
 
+// Blockly.Blocks['loop'] = {
+//   init: function () {
+//     this.appendStatementInput('loop').setCheck(null).appendField('loop:');
+//     this.setPreviousStatement(true, null);
+//     this.setNextStatement(true, null);
+//     this.setColour(230);
+//     this.setTooltip('');
+//     this.setHelpUrl('');
+//   },
+// };
+
+// javascriptGenerator['loop'] = function (block) {
+//   var statements_loop = javascriptGenerator.statementToCode(block, 'loop');
+//   // TODO: Assemble JavaScript into code variable.
+//   var code = statements_loop?.trim()?.replace(/;/g, '');
+//   // const loopStatementsLength = code?.length;
+//   // if (loopStatementsLength && code[loopStatementsLength - 1] === '+') {
+//   //   code = code.substring(
+//   //     0,
+//   //     loopStatementsLength - 1
+//   //   );
+//   // }
+//   return `[${code}`;
+// };
+
 javascriptGenerator['loop'] = function (block) {
-  var statements_loop = javascriptGenerator.statementToCode(block, 'loop');
   // TODO: Assemble JavaScript into code variable.
-  var code = statements_loop?.trim()?.replace(/;/g, '');
-  // const loopStatementsLength = code?.length;
-  // if (loopStatementsLength && code[loopStatementsLength - 1] === '+') {
-  //   code = code.substring(
-  //     0,
-  //     loopStatementsLength - 1
-  //   );
-  // }
-  return `[${code}`;
+  var code = '[';
+  return code;
 };
 
 javascriptGenerator['goto_loop'] = function (block) {
